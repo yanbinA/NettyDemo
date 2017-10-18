@@ -1,4 +1,4 @@
-package BIODemo;
+package com.netty.bio;
 
 import java.io.BufferedReader;
 import java.io.IOException;
