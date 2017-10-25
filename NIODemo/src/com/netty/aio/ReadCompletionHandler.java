@@ -8,6 +8,7 @@ import java.nio.channels.CompletionHandler;
 import java.util.Date;
 
 /**
+ * 接收通知回调的业务Handler
  * Created by yanbin on 2017/10/27 17:47
  */
 public class ReadCompletionHandler implements CompletionHandler<Integer, ByteBuffer>{
@@ -52,7 +53,9 @@ public class ReadCompletionHandler implements CompletionHandler<Integer, ByteBuf
             channel.write(writeBuffer, writeBuffer, new CompletionHandler<Integer, ByteBuffer>() {
                 @Override
                 public void completed(Integer result, ByteBuffer attachment) {
+                    //如果还有剩余字节可写，继续发送
                     if (attachment.hasRemaining()) {
+                        System.out.println("服务器发送数据");
                         channel.write(attachment, attachment, this);
                     }
                 }

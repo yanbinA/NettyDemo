@@ -16,7 +16,7 @@ public class AsyncTimeServerHandler implements Runnable{
     AsynchronousServerSocketChannel asynchronousServerSocketChannel;
     public AsyncTimeServerHandler(int port) {
         this.port = port;
-
+        //创建异步服务端通道，并绑定监听端口
         try {
             asynchronousServerSocketChannel = AsynchronousServerSocketChannel.open();
             asynchronousServerSocketChannel.bind(new InetSocketAddress(port));
@@ -29,6 +29,7 @@ public class AsyncTimeServerHandler implements Runnable{
 
     @Override
     public void run() {
+        //初始化CountDownLatch，其作用是在完成一组正在执行的操作之前，允许当前线程一直阻塞
         latch = new CountDownLatch(1);
         doAccept();
 
@@ -40,6 +41,8 @@ public class AsyncTimeServerHandler implements Runnable{
     }
 
     private void doAccept() {
+        //接收客户端连接
+        //传递CompletionHandler<AsynchronousSocketChannel, ? super A>类型的handler实例接受accept操作成功的通知消息
         asynchronousServerSocketChannel.accept(this, new AcceptCompletionHandler());
     }
 }
