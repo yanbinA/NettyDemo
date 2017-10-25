@@ -35,7 +35,9 @@ public class AsyncTimeClientHandler implements Runnable,CompletionHandler<Void, 
 
     @Override
     public void run() {
+        //CountDownLatch,将异步转换成同步。实际不需要
         latch = new CountDownLatch(1);
+        //发起异步连接请求，连接成功后调用completed方法
         client.connect(new InetSocketAddress(host, port), this, this);
         try {
             latch.await();
@@ -49,6 +51,10 @@ public class AsyncTimeClientHandler implements Runnable,CompletionHandler<Void, 
         }
     }
 
+    /**
+     * 连接成功后的回调方法
+     * 创建请求消息体，调用AsynchronousSocketChannel的write方法进行异步写
+     */
     @Override
     public void completed(Void result, AsyncTimeClientHandler attachment) {
         byte[] req = "QUERY TIME ORDER".getBytes();
@@ -62,6 +68,7 @@ public class AsyncTimeClientHandler implements Runnable,CompletionHandler<Void, 
                 if (attachment.hasRemaining()) {
                     client.write(attachment, attachment, this);
                 } else {
+                    //消息发送完成，执行异步读取操作
                     ByteBuffer readBuffer = ByteBuffer.allocate(1024);
                     client.read(readBuffer, readBuffer, new CompletionHandler<Integer, ByteBuffer>() {
                         @Override
