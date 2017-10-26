@@ -11,7 +11,6 @@ import java.nio.channels.SocketChannel;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.logging.Handler;
 
 /**
  * Created by yanbin on 2017/10/26 0026 4:34
@@ -36,6 +35,7 @@ public class MultiplexerTimeServer implements Runnable{
 
             //4.将ServerSocketChannel注册到Reactor线程的多复路选择器Selector上，并监听ACCEPT事件
             serverChannel.register(selector, SelectionKey.OP_ACCEPT);
+            System.out.println("The Time Server is Ready in port :" + port);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
@@ -50,7 +50,6 @@ public class MultiplexerTimeServer implements Runnable{
     public void run() {
 
         while (!stop) {
-
             try {
                 //5.多复路选择器Selector在run方法中轮询准备就绪的Key
                 selector.select(1000);
@@ -58,6 +57,7 @@ public class MultiplexerTimeServer implements Runnable{
                 Iterator<SelectionKey> iterator = selectionKeys.iterator();
                 SelectionKey key = null;
                 while (iterator.hasNext()) {
+                    System.out.println("多复路选择器Selector 轮询到了准备就绪的Key");
                     key = iterator.next();
                     iterator.remove();
                     try {
@@ -105,7 +105,7 @@ public class MultiplexerTimeServer implements Runnable{
             if (key.isReadable()) {
                 //9.异步读取客户端请求消息到Buffer
                 SocketChannel sc = (SocketChannel) key.channel();
-                ByteBuffer readBuffer = ByteBuffer.allocate(1024);
+                ByteBuffer readBuffer = ByteBuffer.allocate(8);
                 int read = sc.read(readBuffer);
                 if (read > 0) {
                     //读取到内容，进行编码
