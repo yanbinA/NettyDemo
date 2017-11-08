@@ -29,7 +29,7 @@ public class AppTest
     }
 
     /**
-     * Rigourous Test :-)
+     * Rigourous ThreadExceptionTest :-)
      */
     public void testApp()
     {

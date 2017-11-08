@@ -4,10 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 
 /**
+ * 线程 未捕获异常处理器
  * @author yanbin
  * @date 2017/10/29 14:21
  */
-public class Test {
+public class ThreadExceptionTest {
 
     public static void main(String[] args) {
 
