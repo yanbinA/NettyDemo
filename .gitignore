@@ -6,7 +6,7 @@
 
 # BlueJ files
 *.ctxt
-
+*.iml
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
@@ -21,9 +21,9 @@
 /.classpath
 /.project
 /.tomcatplugin
-/target
+/target/
 /work
-
+/test/
 .idea
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
